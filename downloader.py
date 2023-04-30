@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from utils import *
 import py7zr
+import wget
 
 
 class Stack_Exchange_Downloader():
@@ -28,15 +29,10 @@ class Stack_Exchange_Downloader():
     def download(self):
         if self.name == "all":
             for k in self.sites:
-                command = "wget {} -P dumps".format(self.sites[k]["download"])
-                print(command)
-                if os.system(command):
-                    print('Download for {} failed!'.format(k))
+                wget.download(self.sites[k]["download"], curr_dir + '/dumps')
         else:
-            command = "wget {} -P dumps".format(self.sites[self.name]["download"])
-            print(command)
-            if os.system(command):
-                print('Download for {} failed!'.format(self.name))
+            wget.download(self.sites[self.name]["download"], curr_dir + '/dumps')
+
 
     def extract(self):
         if self.name == "all":
