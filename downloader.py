@@ -4,7 +4,7 @@ from utils import *
 import py7zr
 import wget
 
-
+curr_dir  = os.path.dirname(__file__)
 class Stack_Exchange_Downloader():
 
     def __init__(self, name):
@@ -23,7 +23,7 @@ class Stack_Exchange_Downloader():
             site_name = url.replace(".com", "").replace(".net", "")
             download_link = "https://archive.org/download/stackexchange/" + url + ".7z"
             if url == "stackoverflow.com":
-                download_link = "https://archive.org/download/stackexchange/stackoverflow.com-Posts.7z"
+                download_link = "https://archive.org/download/stackexchange/Stackoverflow.com-Posts.7z"
             self.sites[site_name] = {"url" : url, "download" : download_link}
 
     def download(self):
@@ -33,7 +33,6 @@ class Stack_Exchange_Downloader():
         else:
             wget.download(self.sites[self.name]["download"], curr_dir + '/dumps')
 
-
     def extract(self):
         if self.name == "all":
             for k in self.sites:
@@ -41,8 +40,7 @@ class Stack_Exchange_Downloader():
                 #                                                , mode='r'))
                 # archive.extractall()
                 # archive.close()
-                command = "py7zr x dumps/{} dumps/{}".format(self.sites[k]["download"].replace("https://archive.org/download/stackexchange/", ""),
-                                                       k)
+                command = "py7zr x {}/dumps/{} {}/dumps/{}".format(curr_dir, self.sites[k]["download"].replace("https://archive.org/download/stackexchange/", ""), curr_dir, k)
                 print(command)
                 if os.system(command):
                     print('Extraction for {} failed!'.format(k))
@@ -52,8 +50,7 @@ class Stack_Exchange_Downloader():
             #                       , mode='r'))
             # archive.extractall()
             # archive.close()
-            command = "py7zr x dumps/{} dumps/{}".format(self.sites[self.name]["download"].replace("https://archive.org/download/stackexchange/", ""),
-                                                      self.name)
+            command = "py7zr x {}/dumps/{} {}/dumps/{}".format(curr_dir, self.sites[self.name]["download"].replace("https://archive.org/download/stackexchange/", ""), curr_dir, self.name)
             print(command)
             if os.system(command):
                 print('Extraction for {} failed!'.format(self.name))
